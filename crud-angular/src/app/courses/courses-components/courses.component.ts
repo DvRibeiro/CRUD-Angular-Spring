@@ -37,6 +37,8 @@ export class CoursesComponent implements OnInit {
 
 
   ngOnInit(): void {
+    // no need atm
+
   }
 
 }
