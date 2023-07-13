@@ -9,19 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.davir.crudspring.model.Course;
 import com.davir.crudspring.repository.CourseRepository;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping("/api/courses")
+@AllArgsConstructor
 public class CoursesController {
 
     private final CourseRepository courseRepository;
-
-    
-
-    public CoursesController(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
-    }
-
-
 
     //primeiro método 'GET'
     @GetMapping
