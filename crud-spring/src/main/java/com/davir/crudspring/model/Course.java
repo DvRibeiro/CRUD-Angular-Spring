@@ -1,4 +1,6 @@
 package com.davir.crudspring.model;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ public class Course {
     
     @Id //anotação chave primária
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty("_id")
     private long id;
 
     @Column(length = 200, nullable = false)
