@@ -11,4 +11,7 @@ $custom-theme: mat-dark-theme($custom-app-primary, $custom-app-secondary, $custo
 @include angular-material-theme($custom-theme);
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
+  background-color: #424242; // Use a cor desejada para o fundo escuro
+  color: #ffffff; // Use a cor desejada para o texto em contraste com o fundo escuro
+}
