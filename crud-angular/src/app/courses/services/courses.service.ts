@@ -15,7 +15,7 @@ export class CoursesService {
 
   private readonly API = 'api/courses'
 
-  constructor(private httpClient: HttpClient ) { }
+  constructor(private httpClient: HttpClient) { }
 
   findAll() {
     return this.httpClient.get<Course[]>(this.API)
@@ -26,7 +26,7 @@ export class CoursesService {
     )
   }
 
-  save() {
-    
+  save(record: Course) {
+    return this.httpClient.post<Course>(this.API, record);
   }
 }
