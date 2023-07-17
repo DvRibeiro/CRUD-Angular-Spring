@@ -22,6 +22,7 @@ public class CoursesController {
     @GetMapping
     public List<Course> list() {
         return courseRepository.findAll();
+        //método findAll() incluso no JpaRepository
     }
 
     
