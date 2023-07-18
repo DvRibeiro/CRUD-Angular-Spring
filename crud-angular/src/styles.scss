@@ -1,17 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
 @import '@angular/material/theming';
-@include mat-core();
+
+@include mat.core();
 
 $custom-app-primary: mat-palette($mat-light-green, 700);
 $custom-app-secondary: mat-palette($mat-lime);
 $custom-app-warn: mat-palette($mat-red);
 
-$custom-theme: mat-dark-theme($custom-app-primary, $custom-app-secondary, $custom-app-warn);
+$custom-theme: mat-dark-theme((
+  color: (
+    primary: $custom-app-primary,
+    accent: $custom-app-secondary,
+    warn: $custom-app-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
 
 @include angular-material-theme($custom-theme);
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: #424242; // Use a cor desejada para o fundo escuro
   color: #ffffff; // Use a cor desejada para o texto em contraste com o fundo escuro
 }
