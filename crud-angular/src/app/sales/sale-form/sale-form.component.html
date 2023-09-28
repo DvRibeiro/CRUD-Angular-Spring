@@ -1,0 +1,52 @@
+<mat-card>
+  <mat-card-header class="card-header">
+    <mat-card-title>Nova Venda</mat-card-title>
+    <mat-card-subtitle>Insira as informações da nova venda</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Verifica se há clientes cadastrados -->
+    <ng-container *ngIf="clients.length > 0; else noClientsMessage">
+      <form [formGroup]="form" class="full-width">
+        <mat-form-field class="full-width">
+          <mat-label>Cliente</mat-label>
+          <mat-select formControlName="client">
+            <mat-option *ngFor="let client of clients" [value]="client._id">
+              {{ client.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Produto</mat-label>
+          <mat-select formControlName="product">
+            <mat-option *ngFor="let product of products" [value]="product._id">
+              {{ product.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </ng-container>
+
+    <!-- Mensagem para quando não há clientes cadastrados -->
+    <ng-template #noClientsMessage>
+      <p>Não existem clientes cadastrados. Por favor, cadastre um cliente antes de criar uma nova venda.</p>
+    </ng-template>
+
+    <!-- Verifica se há produtos cadastrados -->
+    <ng-container *ngIf="products.length > 0; else noProductsMessage">
+      <!-- Se houver produtos cadastrados, o formulário será exibido -->
+      <!-- Aqui estão os campos do formulário -->
+    </ng-container>
+
+    <!-- Mensagem para quando não há produtos cadastrados -->
+    <ng-template #noProductsMessage>
+      <p>Não existem produtos cadastrados. Por favor, cadastre um produto antes de criar uma nova venda.</p>
+    </ng-template>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button (click)="onSubmit()" color="primary" style="margin-left: 8px;">Salvar</button>
+    <button mat-raised-button (click)="onCancel()" color="warn" style="margin: 6px;">Cancelar</button>
+  </mat-card-actions>
+</mat-card>

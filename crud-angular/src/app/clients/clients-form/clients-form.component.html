@@ -1,0 +1,46 @@
+<mat-card>
+  <mat-card-header class ="card-header">
+    <mat-card-title>Novo Cliente</mat-card-title>
+    <mat-card-subtitle>Insira as informações do novo cliente</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="form" class="full-width">
+      <mat-form-field class="full-width">
+        <mat-label>Nome</mat-label>
+        <input matInput placeholder="Nome" formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" formControlName="email">
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Escolha a data</mat-label>
+        <input matInput [matDatepicker]="datepicker" formControlName="dateBirth">
+        <mat-hint>DD/MM/AAAA</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel>Cancelar</button>
+            <button mat-raised-button color="primary" matDatepickerApply>Selecionar</button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button
+    (click)="onSubmit()"
+    color="primary"
+    style="margin-left: 8px;"
+    >Salvar</button>
+    <button mat-raised-button
+    (click)="onCancel()"
+    color="warn"
+    style="margin: 6px;"
+    >Cancelar</button>
+  </mat-card-actions>
+</mat-card>
