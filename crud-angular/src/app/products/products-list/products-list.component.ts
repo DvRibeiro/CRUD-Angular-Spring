@@ -10,7 +10,7 @@ import { Component, Input } from '@angular/core';
 export class ProductsListComponent {
 
   @Input() products: Product[] = [];
-  readonly displayedColumns = ['name', 'descricao', 'price', 'actions'];
+  readonly displayedColumns = ['name', 'description', 'price', 'actions'];
 
   constructor(
     private router: Router,

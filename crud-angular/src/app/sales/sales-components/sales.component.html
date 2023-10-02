@@ -27,6 +27,7 @@
       <span>Vendas</span>
       <span class="example-spacer"></span>
     </mat-toolbar>
+
     <div class="column-flex mat-elevation-z8">
       <app-sales-list *ngIf="sales$ | async as sales; else loading"
       [sales]="sales"
@@ -38,5 +39,6 @@
         </div>
       </ng-template>
     </div>
+
   </mat-card-content>
 </mat-card>

@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import jakarta.persistence.*;
-import java.util.Date; // Import the java.util.Date class
-import java.util.List;
-
 
 @Data
 @Entity
@@ -23,19 +20,19 @@ public class Client {
     @Column(length = 200, nullable = false)
     private String email;
 
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
+    @Column(length = 200, nullable = false)
+    private String birthDate; // Alterado o tipo para String
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Sale> sales;
+    // @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    // private List<Sale> sales;
 
     // Getter method for birthDate
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
     // Setter method for birthDate
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 }

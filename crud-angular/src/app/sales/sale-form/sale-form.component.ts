@@ -1,3 +1,4 @@
+
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -29,25 +30,49 @@ export class SaleFormComponent implements OnInit{
     private snackBar: MatSnackBar,
     private clientsService: ClientsService, // Renomeie para clientService
     private productsService: ProductsService, // Adicione o serviço de produtos
-    private location: Location ){
-      this.form = this.formBuilder.group({
-        client: [''],
-        product: ['']
-      });
-  }
+    private location: Location )
 
-  ngOnInit(): void {
+    {
+      this.form = this.formBuilder.group({
+        client: [],
+        product: [[]]
+      });
+    }
+
+   ngOnInit(): void {
     this.getClients();
     this.getProducts();
     }
 
-  onSubmit(){
-    this.service.save(this.form.value)
-    .subscribe({
-      next: result => this.onSuccess(),
-      error: error => this.onError()
-    });
-  }
+    onSubmit() {
+      console.log("cliente: ",this.form.value.client)
+      console.log("produto ",this.form.value.product)
+      console.log("form value ",this.form.value)
+
+      const selectedClientId = this.form.value.client;
+      const selectedProductIds = this.form.value.product;
+
+      if (selectedProductIds && selectedProductIds.length > 0) {
+        const selectedClient = this.clients.find(client => client._id === selectedClientId);
+        const selectedProducts = this.products.filter(product => selectedProductIds.includes(product._id));
+        console.log(selectedClient)
+        console.log(selectedProducts)
+
+        const saleData = {
+          client: selectedClient,
+          products: selectedProducts
+        };
+        console.log(saleData)
+
+            this.service.save(saleData)
+            .subscribe({
+              next: result => this.onSuccess(),
+             error: error => this.onError()
+            });
+       } else {
+        this.snackBar.open("Nenhum produto selecionado.", "Fechar", {duration: 4500})
+      }
+    }
 
   onCancel(){
     this.location.back();
@@ -66,7 +91,6 @@ export class SaleFormComponent implements OnInit{
       .subscribe((products: Product[]) => {
         this.products = products;
         this.hasProducts = products.length > 0; // Define se há produtos cadastrados
-
       });
   }
 

@@ -1,12 +1,11 @@
+
 import { Location } from '@angular/common';
 import { Component, OnInit  } from '@angular/core';
-import { NonNullableFormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ClientsService } from '../services/clients.service';
 import { format } from 'date-fns';
-
-
 
 @Component({
   selector: 'app-clients-form',
@@ -16,49 +15,54 @@ import { format } from 'date-fns';
 export class ClientsFormComponent implements OnInit{
 
   form = this.formBuilder.group({
-    name: [''],
-    email: [''],
-    dateBirth: ['']
+    name: ['', [Validators.required, this.nonEmptyStringValidator]],
+    email: ['', [Validators.required, Validators.email, this.nonEmptyStringValidator]],
+    birthDate: ['', [Validators.required, this.nonEmptyStringValidator]],
   });
 
-  constructor(
-    private formBuilder: NonNullableFormBuilder,
+  nonEmptyStringValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (typeof value === 'string' && value.trim() === '') {
+      return { nonEmptyString: true };
+    }
+    return null;
+  }
+
+  constructor(private formBuilder: NonNullableFormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private service: ClientsService,
     private snackBar: MatSnackBar,
     private location: Location,
     ){
-    //this.form
   }
 
+  formatDate(){
+    const dateBirthValue = this.form.value.birthDate;
+    if (dateBirthValue) {
+      const birthDate = new Date(dateBirthValue);
+      const formattedDate = format(birthDate, 'dd/MM/yyyy');
+      this.form.patchValue({ birthDate: formattedDate });
+    }
+  }
   ngOnInit(): void {
     //nothing atm
   }
 
   onSubmit() {
-    const dateBirthValue = this.form.value.dateBirth;
-    // Verifica se o campo dateBirth tem um valor válido
-    if (dateBirthValue) {
-      // Converte o valor do campo dateBirth para um objeto do tipo Date
-      const dateBirth = new Date(dateBirthValue);
-
-      // Formata a data antes de enviar para o serviço
-      const formattedDate = format(dateBirth, 'MM/dd/yyyy');
-
-      console.log(formattedDate); // Exibe a data formatada no console
-
-      // Atualiza o valor do campo dateBirth com a data formatada
-      this.form.patchValue({ dateBirth: formattedDate });
-
-      console.log(dateBirth); // Exibe a data formatada no console
+    if (this.form.valid) {
+      console.log(this.form.value.birthDate)
+      this.formatDate();
+      console.log(this.form.value)
+      this.service.save(this.form.value).subscribe({
+        next: (result) => this.onSuccess(),
+        error: (error) => this.onError(),
+      });
+    } else if (this.form.value.email){
+      this.snackBar.open("Por favor, informe um email válido.", "Fechar", {duration: 4500});
+    } else {
+      this.snackBar.open("Por favor, preencha todos os campos obrigatórios.", "Fechar", {duration: 4500});
     }
-
-    // Envia os dados para o serviço
-    this.service.save(this.form.value).subscribe({
-      next: (result) => this.onSuccess(),
-      error: (error) => this.onError(),
-    });
   }
 
   onCancel(){

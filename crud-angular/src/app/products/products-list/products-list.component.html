@@ -1,3 +1,4 @@
+
 <mat-table mat-table [dataSource]="products">
 
   <!-- Name Column -->
@@ -7,15 +8,15 @@
   </ng-container>
 
   <!-- Descricao Column -->
-  <ng-container matColumnDef="descricao">
+  <ng-container matColumnDef="description">
     <mat-header-cell *matHeaderCellDef class="mat-column-product">Descrição</mat-header-cell>
-    <mat-cell *matCellDef="let product">{{ product.descricao }}</mat-cell>
+    <mat-cell *matCellDef="let product">{{ product.description }}</mat-cell>
   </ng-container>
 
    <!-- Price Column -->
-   <ng-container matColumnDef="price">
+  <ng-container matColumnDef="price">
     <mat-header-cell *matHeaderCellDef class="mat-column-product">Preço</mat-header-cell>
-    <mat-cell *matCellDef="let product">{{ product.preco }}</mat-cell>
+    <mat-cell *matCellDef="let product">{{ product.price }}</mat-cell>
   </ng-container>
 
    <!-- Actions Column -->
@@ -25,11 +26,11 @@
       (click)="onAdd()"
       mat-raised-button color="primary"
       >
-      CREATE</button>
+      ADICIONAR NOVO</button>
 
     </mat-header-cell>
 
-    <mat-cell *matCellDef="let sale" class="action-column">
+    <mat-cell *matCellDef="let product" class="action-column">
       <button
         mat-icon-button
         color="primary"

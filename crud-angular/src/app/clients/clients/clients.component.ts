@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -30,7 +31,7 @@ export class ClientsComponent {
       ); }
 
   onClickVendas() {
-    this.location.back();
+    this.router.navigate(['sales']);
   }
 
   onClickClientes() {

@@ -16,15 +16,6 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-label>Produto</mat-label>
-          <mat-select formControlName="product">
-            <mat-option *ngFor="let product of products" [value]="product._id">
-              {{ product.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
       </form>
     </ng-container>
 
@@ -36,7 +27,16 @@
     <!-- Verifica se há produtos cadastrados -->
     <ng-container *ngIf="products.length > 0; else noProductsMessage">
       <!-- Se houver produtos cadastrados, o formulário será exibido -->
-      <!-- Aqui estão os campos do formulário -->
+      <mat-form-field class="full-width">
+        <form [formGroup]="form" class="full-width">
+          <mat-label>Produto</mat-label>
+          <mat-select formControlName="product" multiple>
+            <mat-option *ngFor="let product of products" [value]="product._id">
+              {{ product.name }}
+            </mat-option>
+          </mat-select>
+        </form>
+      </mat-form-field>
     </ng-container>
 
     <!-- Mensagem para quando não há produtos cadastrados -->

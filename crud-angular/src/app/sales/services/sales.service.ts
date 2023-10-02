@@ -21,7 +21,6 @@ export class SalesService {
     return this.httpClient.get<Sale[]>(this.API)
     .pipe(
       first(),
-      //delay(750),
       tap(sale => console.log(sale))
     )
   }

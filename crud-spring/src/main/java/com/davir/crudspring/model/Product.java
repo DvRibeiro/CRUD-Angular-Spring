@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Data
 @Entity
@@ -23,6 +22,4 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    @ManyToMany(mappedBy = "products")
-    private List<Sale> sales;
 }

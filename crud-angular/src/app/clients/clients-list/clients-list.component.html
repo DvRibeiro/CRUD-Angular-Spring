@@ -1,3 +1,4 @@
+
 <mat-table mat-table [dataSource]="clients">
 
   <!-- Name Column -->
@@ -25,15 +26,15 @@
       (click)="onAdd()"
       mat-raised-button color="primary"
       >
-      CREATE</button>
+      ADICIONAR NOVO</button>
 
     </mat-header-cell>
 
-    <mat-cell *matCellDef="let sale" class="action-column">
+    <mat-cell *matCellDef="let client" class="action-column">
       <button
         mat-icon-button
         color="primary"
-        aria-label="Editar Curso"
+        aria-label="Edit client"
       >
         <mat-icon>edit</mat-icon>
       </button>
@@ -41,7 +42,7 @@
       <button
         mat-icon-button
         color="warn"
-        aria-label="Remover Curso"
+        aria-label="Remove Client"
       >
         <mat-icon>delete</mat-icon>
       </button>

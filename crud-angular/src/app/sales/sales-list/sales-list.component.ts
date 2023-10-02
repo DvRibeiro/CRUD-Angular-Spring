@@ -12,6 +12,11 @@ export class SalesListComponent {
   @Input() sales: Sale[] = [];
   readonly displayedColumns = ['client', 'product', 'actions'];
 
+  formatProductNames(products: any[]): string {
+    return products.map(product => product.name).join(', ');
+  }
+
+
 
   constructor(
       private router: Router,

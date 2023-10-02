@@ -28,7 +28,7 @@ export class ProductsComponent {
       );  }
 
   onClickVendas() {
-    this.location.back();
+    this.router.navigate(['sales'])
   }
 
   onClickClientes() {

@@ -3,14 +3,14 @@
   <!-- Name Column -->
   <ng-container matColumnDef="client">
     <mat-header-cell *matHeaderCellDef class="mat-column-client">Cliente</mat-header-cell>
-    <mat-cell *matCellDef="let sale">{{ sale.client }}</mat-cell>
+    <mat-cell *matCellDef="let sale">{{ sale.client.name }}</mat-cell>
   </ng-container>
 
   <!-- Product Column -->
-  <ng-container matColumnDef="product">
-    <mat-header-cell *matHeaderCellDef class="mat-column-product">Produto</mat-header-cell>
-    <mat-cell *matCellDef="let sale">{{ sale.product }}</mat-cell>
-  </ng-container>
+<ng-container matColumnDef="product">
+  <mat-header-cell *matHeaderCellDef class="mat-column-product">Produto</mat-header-cell>
+  <mat-cell *matCellDef="let sale">{{ formatProductNames(sale.products) }}</mat-cell>
+</ng-container>
 
    <!-- Actions Column -->
   <ng-container matColumnDef="actions">

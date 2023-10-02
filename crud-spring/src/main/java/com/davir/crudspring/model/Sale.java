@@ -19,11 +19,17 @@ public class Sale {
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
+
     @ManyToMany
     @JoinTable(
-            name = "sale_product",
-            joinColumns = @JoinColumn(name = "sale_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+             name = "sale_product",
+             joinColumns = @JoinColumn(name = "sale_id"),
+             inverseJoinColumns = @JoinColumn(name = "product_id")
+     )
+     private List<Product> products;
+ 
+     public List<Product> getProduct() {
+        return products;
+    }
+
 }
