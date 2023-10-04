@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClientsService } from './clients/services/clients.service';
+import { AppMaterialModule } from './shared/app-material/app-material.module';
 
 
 
@@ -21,7 +22,8 @@ import { ClientsService } from './clients/services/clients.service';
     BrowserAnimationsModule,
     MatToolbarModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AppMaterialModule
   ],
   providers: [
     ClientsService

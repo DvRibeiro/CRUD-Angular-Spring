@@ -1,4 +1,14 @@
 <mat-toolbar color="primary">
-  <span>CRUD | Angular + Spring </span>
-</mat-toolbar>
+  <button mat-icon-button class="menu-icon" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item
+        >
+          <mat-icon>person</mat-icon>
+          <span>Davi Ribeiro</span>
+        </button>
+  </mat-menu>
+  <span>CRUD | Angular + Spring</span>
+  <span class="example-spacer"></span></mat-toolbar>
 <router-outlet></router-outlet>

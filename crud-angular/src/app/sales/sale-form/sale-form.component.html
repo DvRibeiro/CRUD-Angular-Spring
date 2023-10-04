@@ -1,11 +1,10 @@
 <mat-card>
   <mat-card-header class="card-header">
-    <mat-card-title>Nova Venda</mat-card-title>
-    <mat-card-subtitle>Insira as informações da nova venda</mat-card-subtitle>
+    <mat-card-title>Detalhes da Venda:</mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
-    <!-- Verifica se há clientes cadastrados -->
+    <div class="spacer"></div>
     <ng-container *ngIf="clients.length > 0; else noClientsMessage">
       <form [formGroup]="form" class="full-width">
         <mat-form-field class="full-width">
