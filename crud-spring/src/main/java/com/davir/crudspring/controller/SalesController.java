@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,7 +35,7 @@ public class SalesController {
     @GetMapping("/{id}")
     public ResponseEntity<Sale> findById(@PathVariable Long id) {
         return saleRepository.findById(id)
-            .map(record -> ResponseEntity.ok().body(record))
+            .map(recordFound -> ResponseEntity.ok().body(recordFound))
             .orElse(ResponseEntity.notFound().build());
 
     }
@@ -44,6 +45,17 @@ public class SalesController {
     public Sale create(@RequestBody Sale sale) {
        return saleRepository.save(sale);
     }
-    
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Sale> update(@PathVariable Long id, @RequestBody Sale sale) {
+        return saleRepository.findById(id)
+            .map(recordFound -> {
+                recordFound.setClient(sale.getClient());
+                recordFound.setProducts(sale.getProducts());
+                Sale updated = saleRepository.save(recordFound);
+                return ResponseEntity.ok().body(updated);
+            })
+            .orElse(ResponseEntity.notFound().build());    
+    }
     
 }

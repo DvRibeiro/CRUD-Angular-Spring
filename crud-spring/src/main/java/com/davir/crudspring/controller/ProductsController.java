@@ -7,12 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.davir.crudspring.model.Product;
+import com.davir.crudspring.model.Sale;
 import com.davir.crudspring.repository.ProductRepository;
 
 import lombok.AllArgsConstructor;
@@ -34,7 +36,7 @@ public class ProductsController {
     @GetMapping("/{id}")
     public ResponseEntity<Product> findById(@PathVariable Long id) {
         return productRepository.findById(id)
-            .map(record -> ResponseEntity.ok().body(record))
+            .map(recordFound -> ResponseEntity.ok().body(recordFound))
             .orElse(ResponseEntity.notFound().build());
 
     }
@@ -43,6 +45,18 @@ public class ProductsController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public Product create(@RequestBody Product product) {
        return productRepository.save(product);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
+        return productRepository.findById(id)
+            .map(recordFound -> {
+                recordFound.setName(product.getName());
+                recordFound.setPrice(product.getPrice());
+                Product updated = productRepository.save(recordFound);
+                return ResponseEntity.ok().body(updated);
+            })
+            .orElse(ResponseEntity.notFound().build());    
     }
     
     
