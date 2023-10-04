@@ -47,14 +47,12 @@ export class ProductsFormComponent implements OnInit{
     if (productId) {
       this.service.loadById(productId).subscribe((data: any) => {
         this.product = data;
-        console.log(this.product)
         this.patchFormWithProductData();
       });
     }
   }
   private patchFormWithProductData() {
     if (this.product) {
-      console.log(this.product.price)
       this.form.patchValue({
         name: this.product.name,
         description: this.product.description,
@@ -64,7 +62,6 @@ export class ProductsFormComponent implements OnInit{
   }
 
   onSubmit() {
-    console.log(this.form.value)
     if (!this.form.valid) {
       this.snackBar.open("Por favor, preencha todos os campos obrigatórios corretamente.", "Fechar", {duration: 4500});
     } else {
@@ -76,6 +73,10 @@ export class ProductsFormComponent implements OnInit{
     if(this.form.value.price){
       this.snackBar.open("Por favor, preencha o campo preço somente com números.", "Fechar", {duration: 4500});
     }
+  }
+
+  formatPrice(price: number): string {
+    return `R$ ${price.toFixed(2)}`;
   }
 
   onCancel(){

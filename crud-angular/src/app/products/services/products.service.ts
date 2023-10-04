@@ -8,8 +8,6 @@ import { Product } from '../model/product';
   providedIn: 'root'
 })
 
-//serviço responsável por fornecer dados relacionados aos cursos.
-//chamadas http, comunicação backend.
 export class ProductsService {
 
 
@@ -22,7 +20,6 @@ export class ProductsService {
     .pipe(
       first(),
       //delay(750),
-      tap(product => console.log(product))
     )
   }
 
@@ -31,14 +28,9 @@ export class ProductsService {
   }
 
   save(record: Partial<Product>) {
-    console.log('id: ',record._id)
     if(record._id){
-      console.log('update')
-
       return this.update(record);
-    }
-    console.log('create')
-    return this.create(record);
+    }    return this.create(record);
   }
 
   private create(record: Partial<Product>){

@@ -9,8 +9,7 @@ import { Observable, first, of, tap } from 'rxjs';
   providedIn: 'root'
 })
 
-//serviço responsável por fornecer dados relacionados aos cursos.
-//chamadas http, comunicação backend.
+
 export class SalesService {
 
   private readonly API = 'api/sales'
@@ -29,13 +28,9 @@ export class SalesService {
   }
 
   save(record: Partial<Sale>) {
-    console.log(record)
     if(record._id){
-      console.log('update')
-
       return this.update(record);
     }
-    console.log('create')
     return this.create(record);
   }
 

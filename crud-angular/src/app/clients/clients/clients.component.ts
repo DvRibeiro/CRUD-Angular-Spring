@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import { Client } from '../model/clients';
 import { Observable, catchError, of } from 'rxjs';
 import { ClientsService } from '../services/clients.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class ClientsComponent {
     this.clients$ = this.clientsService.findAll()
     .pipe(
       catchError(error => {
-        this.onError('Erro ao carregar os cursos.')
+        this.onError('Erro ao carregar os clientes.')
         return of([])
       })
     );
@@ -56,26 +57,34 @@ export class ClientsComponent {
     this.router.navigate(['edit', client._id], {relativeTo: this.route});
   }
 
-  onRemove(client: Client) {
-    this.clientsService.remove(client._id).subscribe(
-      () => {
-        this.refresh();
-        this.snackbar.open('Cliente removido com sucesso!', 'X', {
-          duration: 5000,
-          verticalPosition: 'top',
-          horizontalPosition: 'center'
-        });
-      },
-      () => {
-        this.onError('Erro ao tentar remover Cliente.')
-        this.snackbar.open('Cliente associado com venda', 'X', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          panelClass: ['red-snackbar'],
-        });
 
+  onRemove(client: Client) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'Tem certeza que deseja remover esse produto?',
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if(result){
+        this.clientsService.remove(client._id).subscribe(
+          () => {
+            this.refresh();
+            this.snackbar.open('Cliente removido com sucesso!', 'X', {
+              duration: 5000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center'
+            });
+          },
+          () => {
+            this.onError('Erro ao tentar remover Cliente.')
+            this.snackbar.open('Cliente associado com venda', 'X', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              panelClass: ['red-snackbar'],
+            });
+          }
+        );
       }
-    );
+    });
   }
 
   onClickVendas() {

@@ -59,7 +59,6 @@ export class ClientsFormComponent implements OnInit{
     if (clientId) {
       this.service.loadById(clientId).subscribe((data: any) => {
         this.client = data;
-        console.log(this.client)
         this.patchFormWithClientData();
       });
     }
@@ -68,7 +67,6 @@ export class ClientsFormComponent implements OnInit{
 
   private patchFormWithClientData() {
     if (this.client) {
-      console.log(this.client.birthDate)
       const formatado = this.client.birthDate.split('/').reverse().join('-');
       this.form.patchValue({
         name: this.client.name,
@@ -80,10 +78,8 @@ export class ClientsFormComponent implements OnInit{
 
 
   onSubmit() {
-
     if (!this.form.valid) {
       this.snackBar.open("Por favor, preencha todos os campos obrigatórios.", "Fechar", {duration: 4500});
-      return;
     } else {
       this.formatDate();
       this.service.save(this.form.value).subscribe({
@@ -91,8 +87,7 @@ export class ClientsFormComponent implements OnInit{
         error: (error) => this.onError(),
       });
     }
-
-    if(!this.form.value.email){
+    if(this.form.value.email){
       this.snackBar.open("Insira um email válido.", "Fechar", { duration: 4500 });
     }
   }

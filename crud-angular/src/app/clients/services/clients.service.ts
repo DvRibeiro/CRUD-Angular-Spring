@@ -9,8 +9,7 @@ import { first, tap } from 'rxjs';
   providedIn: 'root'
 })
 
-//serviço responsável por fornecer dados relacionados aos cursos.
-//chamadas http, comunicação backend.
+
 export class ClientsService {
 
 
@@ -23,7 +22,6 @@ export class ClientsService {
     .pipe(
       first(),
       //delay(750),
-      tap(client => console.log(client))
     )
   }
 
@@ -32,13 +30,9 @@ export class ClientsService {
   }
 
   save(record: Partial<Client>) {
-    console.log('id: ',record._id)
     if(record._id){
-      console.log('update')
-
       return this.update(record);
     }
-    console.log('create')
     return this.create(record);
   }
 

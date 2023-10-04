@@ -7,6 +7,7 @@ import { Observable, catchError, of } from 'rxjs';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 import { Sale } from '../model/sales';
 import { SalesService } from '../services/sales.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -63,18 +64,26 @@ export class SalesComponent implements OnInit {
   }
 
   onRemove(sale: Sale) {
-    this.salesService.remove(sale._id).subscribe(
-      () => {
-        this.refresh();
-        this.snackbar.open('Venda removida com sucesso!', 'X', {
-          duration: 5000,
-          verticalPosition: 'top',
-          horizontalPosition: 'center'
-        });
-      },
-      () => this.onError('Erro ao tentar remover Venda.')
-    );
-  }
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        data: 'Tem certeza que deseja remover essa venda?',
+      });
+
+      dialogRef.afterClosed().subscribe((result: boolean) => {
+        if(result){
+          this.salesService.remove(sale._id).subscribe(
+            () => {
+              this.refresh();
+              this.snackbar.open('Venda removida com sucesso!', 'X', {
+                duration: 5000,
+                verticalPosition: 'top',
+                horizontalPosition: 'center'
+              });
+            },
+            () => this.onError('Erro ao tentar remover Venda.')
+          );
+        }
+      });
+    }
 
   onClickVendas() {
     this.router.navigate([''], {relativeTo: this.route})

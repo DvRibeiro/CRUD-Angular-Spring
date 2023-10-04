@@ -16,7 +16,7 @@
    <!-- Price Column -->
   <ng-container matColumnDef="price">
     <mat-header-cell *matHeaderCellDef class="mat-column-product">Preço</mat-header-cell>
-    <mat-cell *matCellDef="let product">{{ product.price }}</mat-cell>
+    <mat-cell *matCellDef="let product">{{ formatPrice(product.price) }}</mat-cell>
   </ng-container>
 
    <!-- Actions Column -->
@@ -25,8 +25,9 @@
       <button
       (click)="onAdd()"
       mat-raised-button color="primary"
+      class="small-font-button"
       >
-      ADICIONAR</button>
+      Adicionar</button>
 
     </mat-header-cell>
 
@@ -44,7 +45,7 @@
       (click)="onDelete(product)"
         mat-icon-button
         color="warn"
-        aria-label="Remover Curso"
+        aria-label="Delete product"
       >
         <mat-icon>delete</mat-icon>
       </button>

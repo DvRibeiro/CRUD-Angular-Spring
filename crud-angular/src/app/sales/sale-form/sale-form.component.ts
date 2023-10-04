@@ -49,14 +49,12 @@ export class SaleFormComponent implements OnInit{
       });
 
       if (saleId) {
-        console.log(saleId);
         this.salesService.loadById(saleId).subscribe((data) => {
           this.sale = data;
           this.patchFormWithSaleData();
         });
       } else {
         // Creating a new sale
-        console.log(saleId);
         this.form = this.formBuilder.group({
           client: [],
           product: [[]]
@@ -68,10 +66,6 @@ export class SaleFormComponent implements OnInit{
 
     private patchFormWithSaleData() {
       if (this.sale) {
-        console.log('sale: ',this.sale)
-        console.log('client: ',this.sale.client._id)
-        console.log('product: ',this.sale.products.map((product: { _id: any; }) => product._id))
-
         this.form.patchValue({
           client:  this.sale.client._id,
           product: this.sale.products.map((product: { _id: any; }) => product._id),
@@ -81,10 +75,6 @@ export class SaleFormComponent implements OnInit{
 
 
     onSubmit() {
-      console.log("cliente: ",this.form.value.client)
-      console.log("produto ",this.form.value.product)
-      console.log("form value ",this.form.value)
-
       const selectedClientId = this.form.value.client;
       const selectedProductIds = this.form.value.product;
 
@@ -96,9 +86,6 @@ export class SaleFormComponent implements OnInit{
       if (selectedProductIds && selectedProductIds.length > 0) {
         const selectedClient = this.clients.find(client => client._id === selectedClientId);
         const selectedProducts = this.products.filter(product => selectedProductIds.includes(product._id));
-        console.log("Cliente Selecionado: ",selectedClient)
-        console.log("Produto Selecionado: ",selectedProducts)
-
         const saleId = this.route.snapshot.params['id'];
 
         const saleData = {
@@ -106,8 +93,6 @@ export class SaleFormComponent implements OnInit{
           client: selectedClient,
           products: selectedProducts
         };
-        console.log("Data enviada: ",saleData)
-
             this.service.save(saleData)
             .subscribe({
               next: result => this.onSuccess(),

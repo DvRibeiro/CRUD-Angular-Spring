@@ -8,6 +8,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { catchError, of } from 'rxjs';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Client } from 'src/app/clients/model/clients';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -34,7 +36,7 @@ export class ProductsComponent {
     this.products$ = this.productsService.findAll()
     .pipe(
       catchError(error => {
-        this.onError('Erro ao carregar os cursos.')
+        this.onError('Erro ao carregar os produtos.')
         return of([])
       })
     );
@@ -55,25 +57,32 @@ export class ProductsComponent {
   }
 
   onRemove(product: Product) {
-    this.productsService.remove(product._id).subscribe(
-      () => {
-        this.refresh();
-        this.snackbar.open('Produto removido com sucesso!', 'X', {
-          duration: 5000,
-          verticalPosition: 'top',
-          horizontalPosition: 'center'
-        });
-      },
-      () => {
-        this.onError('Erro ao tentar remover Produto.')
-        this.snackbar.open('Produto associado com venda', 'X', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          panelClass: ['red-snackbar'],
-        });
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'Tem certeza que deseja remover esse produto?',
+    });
 
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if(result){
+        this.productsService.remove(product._id).subscribe(
+          () => {
+            this.refresh();
+            this.snackbar.open('Produto removido com sucesso!', 'X', {
+              duration: 5000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center'
+            });
+          },
+          () => {
+            this.onError('Erro ao tentar remover Produto.')
+            this.snackbar.open('Produto associado com venda', 'X', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              panelClass: ['red-snackbar'],
+            });
+          }
+        );
       }
-    );
+    });
   }
 
   onClickVendas() {
