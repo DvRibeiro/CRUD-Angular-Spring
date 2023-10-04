@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { Sale } from '../model/sales';
-import { first, tap } from 'rxjs';
+import { Observable, first, of, tap } from 'rxjs';
 
 
 @Injectable({
@@ -21,11 +21,29 @@ export class SalesService {
     return this.httpClient.get<Sale[]>(this.API)
     .pipe(
       first(),
-      tap(sale => console.log(sale))
     )
   }
 
+  loadById(id: string): Observable<Sale>{
+    return this.httpClient.get<Sale>(`${this.API}/${id}`);
+  }
+
   save(record: Partial<Sale>) {
+    console.log(record)
+    if(record._id){
+      console.log('update')
+
+      return this.update(record);
+    }
+    console.log('create')
+    return this.create(record);
+  }
+
+  private create(record: Partial<Sale>){
     return this.httpClient.post<Sale>(this.API, record).pipe(first());
+  }
+
+  private update(record: Partial<Sale>){
+    return this.httpClient.put<Sale>(`${this.API}/${record._id}`, record).pipe(first());
   }
 }

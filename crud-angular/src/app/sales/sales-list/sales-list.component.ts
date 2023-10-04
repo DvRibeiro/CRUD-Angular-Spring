@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Sale } from '../model/sales';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-sales-list',
@@ -10,22 +9,24 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class SalesListComponent {
 
   @Input() sales: Sale[] = [];
+  @Output() add = new EventEmitter(false);
+  @Output() edit = new EventEmitter(false);
+
+
   readonly displayedColumns = ['client', 'product', 'actions'];
 
   formatProductNames(products: any[]): string {
     return products.map(product => product.name).join(', ');
   }
 
-
-
-  constructor(
-      private router: Router,
-      private route: ActivatedRoute
-      ) {
-  }
+  constructor() { }
 
   onAdd() {
-    this.router.navigate(['new'], {relativeTo: this.route});
+    this.add.emit(true)
+  }
+
+  onEdit(sale: Sale) {
+    this.edit.emit(sale)
   }
 
 }

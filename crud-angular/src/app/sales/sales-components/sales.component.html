@@ -31,6 +31,8 @@
     <div class="column-flex mat-elevation-z8">
       <app-sales-list *ngIf="sales$ | async as sales; else loading"
       [sales]="sales"
+      (add)="onAdd()"
+      (edit)="onEdit($event)"
       ></app-sales-list>
 
       <ng-template #loading>

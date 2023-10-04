@@ -30,6 +30,14 @@ export class ClientsComponent {
 
       ); }
 
+  onAdd() {
+    this.router.navigate(['new'], {relativeTo: this.route});
+  }
+
+  onEdit(client: Client) {
+    this.router.navigate(['edit', client._id], {relativeTo: this.route});
+  }
+
   onClickVendas() {
     this.router.navigate(['sales']);
   }

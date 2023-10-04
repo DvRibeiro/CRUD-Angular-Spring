@@ -25,7 +25,8 @@ export class SalesComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private location: Location
-    ) {
+    )
+    {
     this.sales$ = this.salesService.findAll()
     .pipe(
       catchError(error => {
@@ -35,6 +36,11 @@ export class SalesComponent implements OnInit {
     );
   }
 
+  ngOnInit(): void {
+    // no need atm
+
+  }
+
   onError(errorMsg: string) {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg
@@ -42,13 +48,12 @@ export class SalesComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
-    // no need atm
-
-  }
-
   onAdd() {
     this.router.navigate(['new'], {relativeTo: this.route});
+  }
+
+  onEdit(sale: Sale) {
+    this.router.navigate(['edit', sale._id], {relativeTo: this.route});
   }
 
   onClickVendas() {

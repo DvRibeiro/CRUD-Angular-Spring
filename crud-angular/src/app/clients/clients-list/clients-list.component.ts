@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Client } from '../model/clients';
-import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-clients-list',
@@ -10,14 +9,19 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class ClientsListComponent {
 
   @Input() clients: Client[] = [];
+  @Output() add = new EventEmitter(false);
+  @Output() edit = new EventEmitter(false);
+
+
   readonly displayedColumns = ['name', 'email', 'date', 'actions'];
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-    ) { }
+  constructor() { }
 
   onAdd() {
-    this.router.navigate(['new'], {relativeTo: this.route});
+    this.add.emit(true)
+  }
+
+  onEdit(client: Client) {
+    this.edit.emit(client)
   }
 }

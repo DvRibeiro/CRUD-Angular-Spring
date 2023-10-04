@@ -1,11 +1,12 @@
 
-import { Location } from '@angular/common';
+import { ClientsService } from 'src/app/clients/services/clients.service';
+import { Location, formatDate } from '@angular/common';
 import { Component, OnInit  } from '@angular/core';
-import { NonNullableFormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { NonNullableFormBuilder, Validators, AbstractControl, ValidationErrors, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ClientsService } from '../services/clients.service';
 import { format } from 'date-fns';
+import { Client } from '../model/clients';
 
 @Component({
   selector: 'app-clients-form',
@@ -14,11 +15,10 @@ import { format } from 'date-fns';
 })
 export class ClientsFormComponent implements OnInit{
 
-  form = this.formBuilder.group({
-    name: ['', [Validators.required, this.nonEmptyStringValidator]],
-    email: ['', [Validators.required, Validators.email, this.nonEmptyStringValidator]],
-    birthDate: ['', [Validators.required, this.nonEmptyStringValidator]],
-  });
+  form!: FormGroup;
+
+  ClientsService: any;
+  client: any;
 
   nonEmptyStringValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
@@ -45,23 +45,55 @@ export class ClientsFormComponent implements OnInit{
       this.form.patchValue({ birthDate: formattedDate });
     }
   }
-  ngOnInit(): void {
-    //nothing atm
+
+  ngOnInit() {
+    const clientId = this.route.snapshot.params['id'];
+
+    this.form = this.formBuilder.group({
+      _id: [clientId],
+      name: ['', [Validators.required, this.nonEmptyStringValidator]],
+      email: ['', [Validators.required, Validators.email, this.nonEmptyStringValidator]],
+      birthDate: ['', [Validators.required, this.nonEmptyStringValidator]],
+    });
+
+    if (clientId) {
+      this.service.loadById(clientId).subscribe((data: any) => {
+        this.client = data;
+        console.log(this.client)
+        this.patchFormWithClientData();
+      });
+    }
   }
 
+
+  private patchFormWithClientData() {
+    if (this.client) {
+      console.log(this.client.birthDate)
+      const formatado = this.client.birthDate.split('/').reverse().join('-');
+      this.form.patchValue({
+        name: this.client.name,
+        email: this.client.email,
+        birthDate: formatado,
+      });
+    }
+  }
+
+
   onSubmit() {
-    if (this.form.valid) {
-      console.log(this.form.value.birthDate)
+
+    if (!this.form.valid) {
+      this.snackBar.open("Por favor, preencha todos os campos obrigatórios.", "Fechar", {duration: 4500});
+      return;
+    } else {
       this.formatDate();
-      console.log(this.form.value)
       this.service.save(this.form.value).subscribe({
         next: (result) => this.onSuccess(),
         error: (error) => this.onError(),
       });
-    } else if (this.form.value.email){
-      this.snackBar.open("Por favor, informe um email válido.", "Fechar", {duration: 4500});
-    } else {
-      this.snackBar.open("Por favor, preencha todos os campos obrigatórios.", "Fechar", {duration: 4500});
+    }
+
+    if(!this.form.value.email){
+      this.snackBar.open("Insira um email válido.", "Fechar", { duration: 4500 });
     }
   }
 

@@ -26,12 +26,13 @@
       (click)="onAdd()"
       mat-raised-button color="primary"
       >
-      ADICIONAR NOVO</button>
+      ADICIONAR</button>
 
     </mat-header-cell>
 
     <mat-cell *matCellDef="let client" class="action-column">
       <button
+      (click)="onEdit(client)"
         mat-icon-button
         color="primary"
         aria-label="Edit client"

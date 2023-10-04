@@ -1,5 +1,5 @@
-<mat-table mat-table [dataSource]="sales">
 
+<mat-table mat-table [dataSource]="sales">
   <!-- Name Column -->
   <ng-container matColumnDef="client">
     <mat-header-cell *matHeaderCellDef class="mat-column-client">Cliente</mat-header-cell>
@@ -19,17 +19,18 @@
       (click)="onAdd()"
       mat-raised-button color="primary"
       >
-      CREATE</button>
+      ADICIONAR</button>
 
     </mat-header-cell>
 
     <mat-cell *matCellDef="let sale" class="action-column">
       <button
+        (click)="onEdit(sale)"
         mat-icon-button
         color="primary"
-        aria-label="Editar Curso"
+        aria-label="Edit Sale"
       >
-        <mat-icon>edit</mat-icon>
+        <mat-icon >edit</mat-icon>
       </button>
 
       <button

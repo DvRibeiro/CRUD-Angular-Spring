@@ -1,6 +1,5 @@
-import { Router, ActivatedRoute } from '@angular/router';
 import { Product } from './../model/product';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-products-list',
@@ -10,15 +9,19 @@ import { Component, Input } from '@angular/core';
 export class ProductsListComponent {
 
   @Input() products: Product[] = [];
+  @Output() add = new EventEmitter(false);
+  @Output() edit = new EventEmitter(false);
+
   readonly displayedColumns = ['name', 'description', 'price', 'actions'];
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-    ) { }
+  constructor() { }
 
   onAdd() {
-    this.router.navigate(['new'], {relativeTo: this.route});
+    this.add.emit(true)
+  }
+
+  onEdit(product: Product) {
+    this.edit.emit(product)
   }
 
 }

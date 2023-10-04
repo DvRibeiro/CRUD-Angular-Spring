@@ -27,6 +27,14 @@ export class ProductsComponent {
 
       );  }
 
+  onAdd() {
+    this.router.navigate(['new'], {relativeTo: this.route});
+  }
+
+  onEdit(product: Product) {
+    this.router.navigate(['edit', product._id], {relativeTo: this.route});
+  }
+
   onClickVendas() {
     this.router.navigate(['sales'])
   }

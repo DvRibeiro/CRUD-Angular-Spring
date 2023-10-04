@@ -1,14 +1,14 @@
-
+import { SalesService } from './../services/sales.service';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SalesService } from '../services/sales.service';
 import { Client } from 'src/app/clients/model/clients';
 import { Product } from 'src/app/products/model/product';
 import { ClientsService } from 'src/app/clients/services/clients.service';
 import { ProductsService } from 'src/app/products/services/products.service';
+import { Sale } from '../model/sales';
 
 @Component({
   selector: 'app-sale-form',
@@ -17,11 +17,12 @@ import { ProductsService } from 'src/app/products/services/products.service';
 })
 export class SaleFormComponent implements OnInit{
 
-  form: FormGroup;
+  form!: FormGroup;
   clients: Client[] = []; // Altere o tipo para Client[]
   products: Product[] = []; // Altere o tipo para Product[]
   hasClients: boolean = true; // Adicione um atributo para verificar se há clientes cadastrados
   hasProducts: boolean = true; // Adicione um atributo para verificar se há produtos cadastrados
+  sale: any;
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
@@ -30,19 +31,54 @@ export class SaleFormComponent implements OnInit{
     private snackBar: MatSnackBar,
     private clientsService: ClientsService, // Renomeie para clientService
     private productsService: ProductsService, // Adicione o serviço de produtos
-    private location: Location )
+    private location: Location,
+    private salesService: SalesService
+    )
 
     {
+
+    }
+
+    ngOnInit() {
+      const saleId = this.route.snapshot.params['id'];
+
       this.form = this.formBuilder.group({
+        _id: [saleId],
         client: [],
         product: [[]]
       });
+
+      if (saleId) {
+        console.log(saleId);
+        this.salesService.loadById(saleId).subscribe((data) => {
+          this.sale = data;
+          this.patchFormWithSaleData();
+        });
+      } else {
+        // Creating a new sale
+        console.log(saleId);
+        this.form = this.formBuilder.group({
+          client: [],
+          product: [[]]
+        });
+      }
+      this.getClients();
+      this.getProducts();
     }
 
-   ngOnInit(): void {
-    this.getClients();
-    this.getProducts();
+    private patchFormWithSaleData() {
+      if (this.sale) {
+        console.log('sale: ',this.sale)
+        console.log('client: ',this.sale.client._id)
+        console.log('product: ',this.sale.products.map((product: { _id: any; }) => product._id))
+
+        this.form.patchValue({
+          client:  this.sale.client._id,
+          product: this.sale.products.map((product: { _id: any; }) => product._id),
+        });
+      }
     }
+
 
     onSubmit() {
       console.log("cliente: ",this.form.value.client)
@@ -52,17 +88,25 @@ export class SaleFormComponent implements OnInit{
       const selectedClientId = this.form.value.client;
       const selectedProductIds = this.form.value.product;
 
+      if (!selectedClientId) {
+        this.snackBar.open("Selecione um cliente antes de criar a venda.", "Fechar", { duration: 4500 });
+        return;
+      }
+
       if (selectedProductIds && selectedProductIds.length > 0) {
         const selectedClient = this.clients.find(client => client._id === selectedClientId);
         const selectedProducts = this.products.filter(product => selectedProductIds.includes(product._id));
-        console.log(selectedClient)
-        console.log(selectedProducts)
+        console.log("Cliente Selecionado: ",selectedClient)
+        console.log("Produto Selecionado: ",selectedProducts)
+
+        const saleId = this.route.snapshot.params['id'];
 
         const saleData = {
+          _id: saleId,
           client: selectedClient,
           products: selectedProducts
         };
-        console.log(saleData)
+        console.log("Data enviada: ",saleData)
 
             this.service.save(saleData)
             .subscribe({
@@ -70,7 +114,7 @@ export class SaleFormComponent implements OnInit{
              error: error => this.onError()
             });
        } else {
-        this.snackBar.open("Nenhum produto selecionado.", "Fechar", {duration: 4500})
+        this.snackBar.open("Selecione ao menos um produto antes de criar a venda.", "Fechar", {duration: 4500})
       }
     }
 
