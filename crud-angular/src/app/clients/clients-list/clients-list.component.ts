@@ -11,6 +11,7 @@ export class ClientsListComponent {
   @Input() clients: Client[] = [];
   @Output() add = new EventEmitter(false);
   @Output() edit = new EventEmitter(false);
+  @Output() remove = new EventEmitter(false);
 
 
   readonly displayedColumns = ['name', 'email', 'date', 'actions'];
@@ -23,5 +24,9 @@ export class ClientsListComponent {
 
   onEdit(client: Client) {
     this.edit.emit(client)
+  }
+
+  onDelete(client: Client) {
+    this.remove.emit(client)
   }
 }

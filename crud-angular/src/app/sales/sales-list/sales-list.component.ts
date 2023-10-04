@@ -11,6 +11,8 @@ export class SalesListComponent {
   @Input() sales: Sale[] = [];
   @Output() add = new EventEmitter(false);
   @Output() edit = new EventEmitter(false);
+  @Output() remove = new EventEmitter(false);
+
 
 
   readonly displayedColumns = ['client', 'product', 'actions'];
@@ -27,6 +29,10 @@ export class SalesListComponent {
 
   onEdit(sale: Sale) {
     this.edit.emit(sale)
+  }
+
+  onDelete(sale: Sale) {
+    this.remove.emit(sale)
   }
 
 }

@@ -20,10 +20,11 @@ import { ClientsService } from './clients/services/clients.service';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
-    ClientsService 
+    ClientsService
   ],
   bootstrap: [AppComponent]
 })

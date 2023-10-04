@@ -1,3 +1,4 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,7 +17,7 @@ import { SalesService } from '../services/sales.service';
 
 export class SalesComponent implements OnInit {
 
-  sales$: Observable<Sale[]>;
+  sales$: Observable<Sale[]>| null = null;
   displayedColumns = ['client', 'product', 'actions'];
 
   constructor(
@@ -24,9 +25,14 @@ export class SalesComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private snackbar: MatSnackBar
     )
     {
+    this.refresh();
+  }
+
+  refresh(){
     this.sales$ = this.salesService.findAll()
     .pipe(
       catchError(error => {
@@ -54,6 +60,20 @@ export class SalesComponent implements OnInit {
 
   onEdit(sale: Sale) {
     this.router.navigate(['edit', sale._id], {relativeTo: this.route});
+  }
+
+  onRemove(sale: Sale) {
+    this.salesService.remove(sale._id).subscribe(
+      () => {
+        this.refresh();
+        this.snackbar.open('Venda removida com sucesso!', 'X', {
+          duration: 5000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center'
+        });
+      },
+      () => this.onError('Erro ao tentar remover Venda.')
+    );
   }
 
   onClickVendas() {

@@ -46,4 +46,8 @@ export class SalesService {
   private update(record: Partial<Sale>){
     return this.httpClient.put<Sale>(`${this.API}/${record._id}`, record).pipe(first());
   }
+
+  remove(id: string) {
+    return this.httpClient.delete<Sale>(`${this.API}/${id}`).pipe(first());
+  }
 }

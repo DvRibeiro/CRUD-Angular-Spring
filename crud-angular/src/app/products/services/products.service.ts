@@ -31,7 +31,7 @@ export class ProductsService {
   }
 
   save(record: Partial<Product>) {
-    console.log(record)
+    console.log('id: ',record._id)
     if(record._id){
       console.log('update')
 
@@ -47,5 +47,9 @@ export class ProductsService {
 
   private update(record: Partial<Product>){
     return this.httpClient.put<Product>(`${this.API}/${record._id}`, record).pipe(first());
+  }
+
+  remove(id: string) {
+    return this.httpClient.delete<Product>(`${this.API}/${id}`).pipe(first());
   }
 }

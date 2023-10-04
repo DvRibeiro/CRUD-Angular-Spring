@@ -28,7 +28,7 @@ public class Sale {
      )
      private List<Product> products;
  
-     public List<Product> getProduct() {
+     public List<Product> getProducts() {
         return products;
     }
 

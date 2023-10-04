@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.davir.crudspring.model.Client;
-import com.davir.crudspring.model.Product;
 import com.davir.crudspring.repository.ClientRepository;
+import com.davir.crudspring.repository.SaleRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -25,6 +26,8 @@ import lombok.AllArgsConstructor;
 public class ClientsController {
 
     private final ClientRepository clientRepository;
+    private final SaleRepository saleRepository;
+
 
     //primeiro método 'GET'
     @GetMapping
@@ -58,6 +61,20 @@ public class ClientsController {
                 return ResponseEntity.ok().body(updated);
             })
             .orElse(ResponseEntity.notFound().build());    
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        if(saleRepository.existsByClientId(id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).<Void>build();
+        } else {
+            return clientRepository.findById(id)
+            .map(recordFound -> {
+                clientRepository.deleteById(id);
+                return ResponseEntity.noContent().<Void>build();
+            })
+            .orElse(ResponseEntity.notFound().build());
+        }
     }
     
     
