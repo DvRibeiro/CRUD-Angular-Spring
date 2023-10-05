@@ -84,7 +84,7 @@ export class ProductsFormComponent implements OnInit{
   }
 
   private onSuccess(){
-    this.snackBar.open("Produto cadastrado com sucesso.", "Fechar", {duration: 4500});
+    this.snackBar.open("Produto salvo.", "Fechar", {duration: 4500});
     this.onCancel();
   }
 

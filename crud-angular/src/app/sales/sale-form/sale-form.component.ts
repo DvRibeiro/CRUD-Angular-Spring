@@ -124,7 +124,7 @@ export class SaleFormComponent implements OnInit{
   }
 
   private onSuccess(){
-    this.snackBar.open("Venda criada com sucesso.", "Fechar", {duration: 4500});
+    this.snackBar.open("Venda salva.", "Fechar", {duration: 4500});
     this.onCancel();
   }
 

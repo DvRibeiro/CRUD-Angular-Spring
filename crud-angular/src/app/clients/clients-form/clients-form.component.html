@@ -20,7 +20,6 @@
       <mat-form-field class="full-width">
         <mat-label>Escolha a data</mat-label>
         <input matInput [matDatepicker]="datepicker" formControlName="birthDate" [readonly]="true">
-        <mat-hint>DD/MM/AAAA</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
         <mat-datepicker #datepicker>
           <mat-datepicker-actions>

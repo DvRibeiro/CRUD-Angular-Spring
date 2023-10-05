@@ -67,11 +67,10 @@ export class ClientsFormComponent implements OnInit{
 
   private patchFormWithClientData() {
     if (this.client) {
-      const formatado = this.client.birthDate.split('/').reverse().join('-');
       this.form.patchValue({
         name: this.client.name,
         email: this.client.email,
-        birthDate: formatado,
+        birthDate: this.client.birthDate.split('/').reverse().join('-'),
       });
     }
   }
@@ -97,7 +96,7 @@ export class ClientsFormComponent implements OnInit{
   }
 
   private onSuccess(){
-    this.snackBar.open("Cliente cadastrado com sucesso.", "Fechar", {duration: 4500});
+    this.snackBar.open("Cliente salvo.", "Fechar", {duration: 4500});
     this.onCancel();
   }
 
